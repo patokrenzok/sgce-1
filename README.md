@@ -5,40 +5,41 @@
 [![Requirements Status](https://requires.io/github/vinigracindo/sgce/requirements.svg?branch=master)](https://requires.io/github/vinigracindo/sgce/requirements/?branch=master)
 [![License](https://img.shields.io/pypi/l/django-treenode.svg)](https://img.shields.io/pypi/l/django-treenode.svg)
 
-## Sistema Gerenciador de Certificados Eletrônicos
+## Sistema de Gestión de Certificados Digitales
 
 ### [Changelog](CHANGELOG.md)
 
 Live demo:<br/>
 https://sgce-app.herokuapp.com/<br/>
-https://sgce-app.herokuapp.com/login/ (User: admin | Password: adm11200)
+https://sgce-app.herokuapp.com/login/ (Usuario: admin | Clave: adm11200)
 
-O SGCE está sendo desenvolvido baseado no [SGCE criado pela Universidade Federal de Pampa](https://softwarepublico.gov.br/social/sgce).
+Sistema basado en: [SGCE criado pela Universidade Federal de Pampa](https://softwarepublico.gov.br/social/sgce).
 
-## Agradecimentos
+## Agradecimientos
 [Raphael Gibson](https://github.com/raphaelgibson)
+[Vinnicyus Gracindo](https://github.com/vinigracindo)
 
-## Screenshots
+## Capturas
 ![Main](https://user-images.githubusercontent.com/999040/44290422-0b453080-a24f-11e8-9075-fbcdfab8a96e.png)
 ![Certificado](https://user-images.githubusercontent.com/999040/44290578-b81fad80-a24f-11e8-9277-2fcdb33d071a.png)
 
-## Requerimentos
+## Requiere
 1. Django >= 2.0
 2. Python >= 3.6
 3. PostgresSQL >= 9.4
 
-## Como desenvolver?
+## ¿Cómo instalar?
 
-1. Clone o repositório.
-2. Crie um virtualenv com Python 3.6
-3. Ative o virtualenv.
-4. Instale as depêndencias.
-5. Configure a instância com o .env
-6. Rode as Migrações
-7. Importe os Dados Iniciais
-8. Execute os testes.
-9. Crie um super usuário.
-9. Rode o servidor
+1. Clone el repositorio.
+2. Cree un virtualenv con Python 3.6
+3. Activar el virtualenv.
+4. Instale las dependencias.
+5. Configurar la instancia con .env
+6. Ejecutar migraciones.
+7. Importar datos iniciales.
+8. Ejecute las pruebas.
+9. Crea un superusuario.
+9. Ejecutar el servidor.
 
 
 ### Linux
@@ -56,82 +57,43 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-### Windows
+## Instalación en Ubuntu Server
+
+### 1. Instalación de paquetes desde repositorios de Ubuntu
+
+1. Actualizamos Ubuntu e instalamos los paquetes
+
 ```console
-git clone https://github.com/vinigracindo/sgce.git sgce
-cd sgce
-python -m venv .sgce
-.sgce\Scripts\activate
-pip install -r requirements.txt
-copy contrib\ini-sample settings.ini
-python manage.py migrate
-python manage.py loaddata Group
-python manage.py test
-python manage.py createsuperuser
-python manage.py runserver
+sudo apt-get update
+sudo apt install python3-pip
+sudo apt install python3-dev
+sudo apt install libpq-dev
+sudo apt install postgresql
+sudo apt install postgresql-contrib
+sudo apt install nginx
+sudo apt install curl
 ```
 
-## Deploy com Docker
+### 2. Creamos base de datos y usuario en PostgreSQL
 
-1. Configurar as varíaveis no arquivo .env.prod
-```
-DEBUG=0
-SECRET_KEY=<Gere uma chave única>
-DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-SQL_DATABASE=<db_name>
-SQL_USER=<db_user>
-SQL_PASSWORD=<db_password>
-SQL_HOST=<db_host>
-SQL_PORT=5432
-```
-
-DEBUG: 0 = False. 1 = True
-
-SECRET_KEY: Gere uma secret key utilizando o contrib/secret_gen.py ou utilizando o site https://djecrety.ir/
-
-Remova as variáveis SQL_DATABASE, SQL_USER, SQL_PASSWORD, SQL_HOST e SQL_PORT para utilizar os valores defaults
-do settings.py
-
-2. Execute o docker compose
+1. Creamos lo dependiente a la Base de Datos
 ```console
-docker-compose -f docker-compose.yml up -d --build
+sudo -u postgres psql
 
-docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
-
-docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
-
-docker-compose -f docker-compose.prod.yml exec web python manage.py loaddata Group
-
-docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
-```
-
-Deploy realizado na porta 1337. Acesse http://localhost:1337/
-
-Caso queira mudar a porta, basta alterar o serviço do nginx no docker-compose.yml e alterar a variável `ports`.
-
-## Como realizar Deploy no Ubuntu Server
-
-### 1. Instalando os pacotes dos repositórios do Ubuntu
-
-1. Atualize seu ubuntu: `sudo apt-get update`
-2. Instale o nginx: `sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx curl`
-
-### 2. Criando o banco de dados e o usuário PostgreSQL
-
-1. Logue-se em uma sessão interativa do Postgres digitando: `sudo -u postgres psql`
-2. Crie um banco de dados para seu projeto: `CREATE DATABASE my_postgres_db;`
-3. Crie um usuário do banco de dados para o projeto: `CREATE USER meu_usuario WITH PASSWORD 'password';`
-4. Dar ao novo usuário acesso para administrar o novo banco de dados: `GRANT ALL PRIVILEGES ON DATABASE my_postgres_db TO meu_usuario;`
-5. Configurações opcionais:
-```
+CREATE DATABASE my_postgres_db;
+CREATE USER meu_usuario WITH PASSWORD '51et8fPATO';
+GRANT ALL PRIVILEGES ON DATABASE my_postgres_db TO meu_usuario;
+ALTER ROLE meu_usuario SET client_encoding TO 'utf8';
+ALTER ROLE meu_usuario SET default_transaction_isolation TO 'read committed';
+ALTER ROLE meu_usuario SET timezone TO 'UTC';
 ALTER ROLE meu_usuario SET client_encoding TO 'utf8';
 ALTER ROLE meu_usuario SET default_transaction_isolation TO 'read committed';
 ALTER ROLE meu_usuario SET timezone TO 'UTC';
 ```
 
-### 3. Criando um Ambiente Virtual (virtualenv)
+### 3. Creamos el ambiente virtual (virtualenv)
 
-1. `cd /home/meu_usuario/` // Você pode escolher qualquer pasta dentro do sistema de arquivo.
+1. `cd /home/certificaciones/` // Podés elegir cualquiér carpeta.
 2. `mkdir sgce` e `cd sgce`
 3. `python3 -m venv .sgce`
 4. Ative o ambiente virtual: `source .sgce/bin/activate`
@@ -232,10 +194,10 @@ Requires=gunicorn.socket
 After=network.target
 
 [Service]
-User=meu_usuario
+User=certificaciones
 Group=www-data
-WorkingDirectory=/home/meu_usuario/sgce
-ExecStart=/home/meu_usuario/sgce/.sgce/bin/gunicorn \
+WorkingDirectory=/home/certificaciones/sgce
+ExecStart=/home/certificaciones/sgce/.sgce/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \
@@ -253,14 +215,14 @@ Requires=gunicorn.socket
 After=network.target
 
 [Service]
-User=sammy
+User=certificaciones
 Group=www-data
-WorkingDirectory=/home/sammy/myprojectdir
-ExecStart=/home/sammy/myprojectdir/myprojectenv/bin/gunicorn \
+WorkingDirectory=/home/certificaciones/sgce
+ExecStart=/home/certificaciones/sgce/.sgce/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \
-          myproject.wsgi:application
+          sgce.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
